@@ -35,7 +35,9 @@ class APE:
         self.context.provider.disconnect()
 
     def __enter__(self):
+        self.context.__enter__()
         return self.connect()
 
     def __exit__(self, _, ex, tb):
+        self.context.__exit__(_, ex, tb)
         self.disconnect()
