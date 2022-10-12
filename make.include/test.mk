@@ -36,6 +36,9 @@ tox: .tox
 	env PYTEST_OPTIONS='$(tox_options)' tox
 	@touch $@
 
+dirtytox:
+	$(MAKE) --no-print-directory ALLOW_DIRTY=1 tox
+
 # run tox in debug mode
 toxdebug:
 	$(MAKE) --no-print-directory tox_options="-o log_cli_level=INFO -xvvvs --pdb" tox
