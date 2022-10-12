@@ -4,7 +4,7 @@ import sys
 
 import click
 from box import Box
-from eth_utils import to_checksum_address, from_wei
+from eth_utils import from_wei, to_checksum_address
 
 from .context import APE
 from .exception_handler import ExceptionHandler
@@ -91,19 +91,20 @@ def txn(ctx, url, txn_hash):
 
     output(ctx, ret)
 
+
 @cli.command
-@click.argument('account', type=str)
-@click.option('-w', '--wei', is_flag=True, help='output wei')
-@click.option('-g', '--gwei', is_flag=True, help='output gwei')
-@click.option('-e', '--ether', is_flag=True, help='output ether')
+@click.argument("account", type=str)
+@click.option("-w", "--wei", is_flag=True, help="output wei")
+@click.option("-g", "--gwei", is_flag=True, help="output gwei")
+@click.option("-e", "--ether", is_flag=True, help="output ether")
 @click.pass_context
 def balance(ctx, account, wei, gwei, ether):
     """output account balance"""
-    account=to_checksum_address(account)
+    account = to_checksum_address(account)
     with ctx.obj.ape as ape:
         as_wei = ape.provider.get_balance(account)
-        as_ether = from_wei(as_wei, 'ether')
-        as_gwei = from_wei(as_wei, 'gwei')
+        as_ether = from_wei(as_wei, "ether")
+        as_gwei = from_wei(as_wei, "gwei")
         if wei:
             ret = as_wei
         elif gwei:
@@ -113,7 +114,7 @@ def balance(ctx, account, wei, gwei, ether):
         else:
             ret = {account: dict(wei=as_wei, gwei=as_gwei, ether=as_ether)}
 
-    output(ctx, ret )
+    output(ctx, ret)
 
 
 @cli.group
@@ -122,6 +123,7 @@ def eth(ctx):
     """expose web3.eth methods"""
     pass
 
+
 @eth.command
 @click.pass_context
 def get_block_number(ctx):
@@ -129,18 +131,17 @@ def get_block_number(ctx):
         ret = ape.web3.eth.get_block_number()
     output(ctx, ret)
 
+
 @eth.command
-@click.argument('block', type=str)
+@click.argument("block", type=str)
 @click.pass_context
 def get_block(ctx, block):
     if block.isnumeric():
-        block=int(block)
+        block = int(block)
     with ctx.obj.ape as ape:
         _block = ape.web3.eth.get_block(block)
         ret = dict(_block)
     output(ctx, ret)
-
-
 
 
 if __name__ == "__main__":

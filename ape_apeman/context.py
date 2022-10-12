@@ -4,8 +4,11 @@ import os
 
 import ape
 
+
 class APE:
-    def __init__(self, ecosystem=None, network=None, provider=None, connect=False):
+    def __init__(
+        self, ecosystem=None, network=None, provider=None, connect=False
+    ):
         ecosystem = ecosystem or os.environ["APE_ECOSYSTEM"]
         network = network or os.environ["APE_NETWORK"]
         provider = provider or os.environ["APE_PROVIDER"]
@@ -16,7 +19,6 @@ class APE:
 
     def __del__(self):
         self.disconnect()
-
 
     def connect(self):
         self.context.provider.connect()
