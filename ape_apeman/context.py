@@ -30,7 +30,6 @@ class APE:
         self.network = provider.network
         self.explorer = provider.network.explorer
         self.web3 = provider.web3
-        self.chain = ape.chain
 
     def disconnect(self):
         self.context.provider.disconnect()

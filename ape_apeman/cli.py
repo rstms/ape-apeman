@@ -73,7 +73,7 @@ def fail(message):
 def cli(ctx, ecosystem, network, provider, **flags):
     ctx.obj = Box(flags)
     ctx.obj.ehandler = ExceptionHandler(ctx.obj.debug)
-    ctx.obj.ape = APE(ecosystem, network, provider, connect=True)
+    ctx.obj.ape = APE(ecosystem, network, provider)
 
 
 @cli.command
@@ -91,7 +91,7 @@ def txn(ctx, url, logs, txn_hash):
         elif logs:
             receipt = ape.provider.get_receipt(txn_hash)
             logs = receipt.decode_logs()
-            ret = logs
+            ret = [log.dict() for log in logs]
         else:
             receipt = ape.provider.get_receipt(txn_hash)
             ret = receipt.dict()
