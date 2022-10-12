@@ -3,6 +3,11 @@ ape-apeman
 
 An opinionated alternative api for the most excellent eth-ape project.
 
+- 12-factor compliant
+- embeddable in a service
+- independent of user interaction
+
+
 ![Image](https://img.shields.io/github/license/rstms/ape-apeman)
 
 ![Image](https://img.shields.io/pypi/v/ape-apeman.svg)
