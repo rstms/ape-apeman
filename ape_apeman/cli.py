@@ -6,7 +6,8 @@ import click
 from box import Box
 from eth_utils import from_wei, to_checksum_address
 
-from .context import APE
+import ape_apeman
+
 from .exception_handler import ExceptionHandler
 from .json import dumps
 from .version import __timestamp__, __version__
@@ -73,18 +74,25 @@ def fail(message):
 def cli(ctx, ecosystem, network, provider, **flags):
     ctx.obj = Box(flags)
     ctx.obj.ehandler = ExceptionHandler(ctx.obj.debug)
-    ctx.obj.ape = APE(ecosystem, network, provider)
+    ctx.obj.ape = ape_apeman.APE(ecosystem, network, provider, connect=True)
 
 
 @cli.command
 @click.option("-u", "--url", is_flag=True, help="output transaction url")
+@click.option(
+    "-l", "--logs", is_flag=True, help="output decoded transaction logs"
+)
 @click.argument("txn-hash", type=str)
 @click.pass_context
-def txn(ctx, url, txn_hash):
+def txn(ctx, url, logs, txn_hash):
     """output transaction receipt"""
     with ctx.obj.ape as ape:
         if url:
             ret = ape.explorer.get_transaction_url(txn_hash)
+        elif logs:
+            receipt = ape.provider.get_receipt(txn_hash)
+            logs = receipt.decode_logs()
+            ret = logs
         else:
             receipt = ape.provider.get_receipt(txn_hash)
             ret = receipt.dict()
