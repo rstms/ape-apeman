@@ -6,11 +6,10 @@ import click
 from box import Box
 from eth_utils import from_wei, to_checksum_address
 
-import ape_apeman
-
 from .exception_handler import ExceptionHandler
 from .json import dumps
 from .version import __timestamp__, __version__
+from .context import APE
 
 header = f"{__name__.split('.')[0]} v{__version__} {__timestamp__}"
 
@@ -74,7 +73,7 @@ def fail(message):
 def cli(ctx, ecosystem, network, provider, **flags):
     ctx.obj = Box(flags)
     ctx.obj.ehandler = ExceptionHandler(ctx.obj.debug)
-    ctx.obj.ape = ape_apeman.APE(ecosystem, network, provider, connect=True)
+    ctx.obj.ape = APE(ecosystem, network, provider, connect=True)
 
 
 @cli.command

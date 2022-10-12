@@ -2,6 +2,7 @@
 
 import pytest
 from ape_ethereum.transactions import Receipt
+
 from ape_apeman import APE
 
 
@@ -20,6 +21,7 @@ def check_receipt():
         assert isinstance(receipt, Receipt)
 
     return _check_receipt
+
 
 @pytest.fixture
 def check_block_number():
@@ -60,21 +62,25 @@ def test_module_init_receipt(txn_hash, check_receipt):
     receipt = ape.provider.get_receipt(txn_hash)
     check_receipt(receipt)
 
+
 def test_module_connect_receipt(txn_hash, check_receipt):
     ape = APE()
     ape.connect()
     receipt = ape.provider.get_receipt(txn_hash)
     check_receipt(receipt)
 
+
 def test_module_context_web3(check_block_number):
     with APE() as ape:
         n = ape.web3.eth.get_block_number()
     check_block_number(n)
 
+
 def test_module_init_web3(check_block_number):
     ape = APE(connect=True)
     n = ape.web3.eth.get_block_number()
     check_block_number(n)
+
 
 def test_module_connect_web3(check_block_number):
     ape = APE()
