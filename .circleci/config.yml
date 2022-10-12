@@ -13,10 +13,13 @@ jobs:
     docker:
       - image: rstms/python-hydra:1.0.2
     steps:
-      - checkout
+      - checkout:
+          path: "ape-apeman"
+
       - run:
           name: Install Dependencies
           command: |
+            cd ape-apeman
             python -m venv venv
             . venv/bin/activate
             pip install --upgrade pip setuptools wheel
@@ -25,5 +28,6 @@ jobs:
       - run:
           name: Run All Tests
           command: |
+            cd ape-apeman
             . venv/bin/activate
             make tox
