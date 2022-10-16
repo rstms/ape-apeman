@@ -6,10 +6,10 @@ import click
 from box import Box
 from eth_utils import from_wei, to_checksum_address
 
+from .context import APE
 from .exception_handler import ExceptionHandler
 from .json import dumps
 from .version import __timestamp__, __version__
-from .context import APE
 
 header = f"{__name__.split('.')[0]} v{__version__} {__timestamp__}"
 

@@ -2,6 +2,7 @@
 
 import pytest
 from ape_ethereum.transactions import Receipt
+from eth_account import Account
 
 from ape_apeman import APE
 
@@ -87,3 +88,68 @@ def test_module_connect_web3(check_block_number):
     ape.connect()
     n = ape.web3.eth.get_block_number()
     check_block_number(n)
+
+
+def test_module_context_contract(contract_address):
+    with APE() as ape:
+        contract = ape.contracts.instance_at(contract_address)
+        assert contract
+        symbol = contract.symbol()
+        assert symbol == "ETHERSIEVE"
+        print(f"{contract_address=} {symbol=}")
+
+
+def test_module_init_contract(contract_address):
+    ape = APE(connect=True)
+    contract = ape.contracts.instance_at(contract_address)
+    assert contract
+    symbol = contract.symbol()
+    assert symbol == "ETHERSIEVE"
+    print(f"{contract_address=} {symbol=}")
+
+
+def test_module_connect_contract(contract_address):
+    ape = APE()
+    ape.connect()
+    contract = ape.contracts.instance_at(contract_address)
+    assert contract
+    symbol = contract.symbol()
+    assert symbol == "ETHERSIEVE"
+    print(f"{contract_address=} {symbol=}")
+
+
+def _sign_and_send(ape, contract_address, owner_address, owner_private_key):
+    account = Account().from_key(owner_private_key)
+    assert account.address == owner_address
+    contract = ape.contracts.instance_at(contract_address)
+    txn = contract.getPrices.as_transaction(
+        sender=account.address, required_confirmations=1
+    )
+    txn.nonce = ape.provider.get_nonce(account.address)
+    txn.signature = account.sign_transaction(txn.dict())
+    receipt = ape.provider.send_transaction(txn)
+    print(receipt)
+    ret = receipt.return_value
+    print(ret)
+
+
+def test_module_context_sign_and_send(
+    contract_address, owner_address, owner_private_key
+):
+    with APE() as ape:
+        _sign_and_send(ape, contract_address, owner_address, owner_private_key)
+
+
+def test_module_init_sign_and_send(
+    contract_address, owner_address, owner_private_key
+):
+    ape = APE(connect=True)
+    _sign_and_send(ape, contract_address, owner_address, owner_private_key)
+
+
+def test_module_connect_sign_and_send(
+    contract_address, owner_address, owner_private_key
+):
+    ape = APE()
+    ape.connect()
+    _sign_and_send(ape, contract_address, owner_address, owner_private_key)
