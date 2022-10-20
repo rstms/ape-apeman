@@ -123,7 +123,9 @@ def _sign_and_send(ape, contract_address, owner_address, owner_private_key):
     assert account.address == owner_address
     contract = ape.Contract(contract_address)
     txn = contract.getPrices.as_transaction(
-        sender=account.address, required_confirmations=1, max_priority_fee='10 gwei'
+        sender=account.address,
+        required_confirmations=1,
+        max_priority_fee="10 gwei",
     )
     txn.nonce = ape.provider.get_nonce(account.address)
     txn.signature = account.sign_transaction(txn.dict())
@@ -133,6 +135,7 @@ def _sign_and_send(ape, contract_address, owner_address, owner_private_key):
     print(ret)
 
 
+@pytest.mark.uses_gas
 def test_module_context_sign_and_send(
     contract_address, owner_address, owner_private_key
 ):
@@ -140,6 +143,7 @@ def test_module_context_sign_and_send(
         _sign_and_send(ape, contract_address, owner_address, owner_private_key)
 
 
+@pytest.mark.uses_gas
 def test_module_init_sign_and_send(
     contract_address, owner_address, owner_private_key
 ):
@@ -147,6 +151,7 @@ def test_module_init_sign_and_send(
     _sign_and_send(ape, contract_address, owner_address, owner_private_key)
 
 
+@pytest.mark.uses_gas
 def test_module_connect_sign_and_send(
     contract_address, owner_address, owner_private_key
 ):

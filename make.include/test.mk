@@ -1,11 +1,10 @@
 # test - testing with pytest and tox
 
-options ?= -x --log-cli-level=CRITICAL
+options ?= -x --log-cli-level=CRITICAL $(if $(USE_GAS),,-m "not uses_gas")
 testfiles ?= $(wildcard tests/test_*.py)
 options := $(if $(test),$(options) -k $(test),$(options))
 
 tox_options ?=
-
 
 
 ### run tests;  example: make options=-svvx test=cli test 

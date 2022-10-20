@@ -71,7 +71,7 @@ def fail(message):
 )
 @click.pass_context
 def cli(ctx, ecosystem, network, debug, provider, json, compact, humanize):
-    ctx.obj = Box(ehandler = ExceptionHandler(debug))
+    ctx.obj = Box(ehandler=ExceptionHandler(debug))
     ctx.obj.debug = debug
     ctx.obj.json = json
     ctx.obj.compact = compact
