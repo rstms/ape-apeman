@@ -70,9 +70,12 @@ def fail(message):
     "-h", "--humanize", is_flag=True, help="human-friendly (but lossy) output"
 )
 @click.pass_context
-def cli(ctx, ecosystem, network, provider, **flags):
-    ctx.obj = Box(flags)
-    ctx.obj.ehandler = ExceptionHandler(ctx.obj.debug)
+def cli(ctx, ecosystem, network, debug, provider, json, compact, humanize):
+    ctx.obj = Box(ehandler = ExceptionHandler(debug))
+    ctx.obj.debug = debug
+    ctx.obj.json = json
+    ctx.obj.compact = compact
+    ctx.obj.humanize = humanize
     ctx.obj.ape = APE(ecosystem, network, provider)
 
 
@@ -110,16 +113,16 @@ def balance(ctx, account, wei, gwei, ether):
     account = to_checksum_address(account)
     with ctx.obj.ape as ape:
         as_wei = ape.provider.get_balance(account)
-        as_ether = from_wei(as_wei, "ether")
-        as_gwei = from_wei(as_wei, "gwei")
-        if wei:
-            ret = as_wei
-        elif gwei:
-            ret = as_gwei
-        elif ether:
-            ret = as_ether
-        else:
-            ret = {account: dict(wei=as_wei, gwei=as_gwei, ether=as_ether)}
+    as_ether = from_wei(as_wei, "ether")
+    as_gwei = from_wei(as_wei, "gwei")
+    if wei:
+        ret = as_wei
+    elif gwei:
+        ret = as_gwei
+    elif ether:
+        ret = as_ether
+    else:
+        ret = {account: dict(wei=as_wei, gwei=as_gwei, ether=as_ether)}
 
     output(ctx, ret)
 

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import json
-from traceback import print_exception
 
 import pytest
 from click.testing import CliRunner
@@ -27,8 +26,9 @@ def run():
     def _run(cmd, **kwargs):
         expect_exit_code = kwargs.pop("expect_exit_code", 0)
         expect_exception = kwargs.pop("expect_exception", None)
-        if expect_exception is None:
-            kwargs["catch_exceptions"] = False
+
+        # if expect_exception is None:
+        #    kwargs["catch_exceptions"] = False
 
         # kwargs["env"] = env
         result = runner.invoke(cli, cmd, **kwargs)
@@ -38,13 +38,10 @@ def run():
             ):
                 return result
             else:
-                print_exception(result.exception)
-                breakpoint()
-                pass
+                raise result.exception from result.exception
         else:
             assert result.exit_code == expect_exit_code, result.output
-        if expect_exception:
-            raise RuntimeError(f"unraised {expect_exception=}")
+            assert expect_exception is None, f"{expect_exception=}"
         return result
 
     return _run

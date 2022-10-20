@@ -121,9 +121,9 @@ def test_module_connect_contract(contract_address):
 def _sign_and_send(ape, contract_address, owner_address, owner_private_key):
     account = Account().from_key(owner_private_key)
     assert account.address == owner_address
-    contract = ape.contracts.instance_at(contract_address)
+    contract = ape.Contract(contract_address)
     txn = contract.getPrices.as_transaction(
-        sender=account.address, required_confirmations=1
+        sender=account.address, required_confirmations=1, max_priority_fee='10 gwei'
     )
     txn.nonce = ape.provider.get_nonce(account.address)
     txn.signature = account.sign_transaction(txn.dict())

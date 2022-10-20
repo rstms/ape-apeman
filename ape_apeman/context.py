@@ -33,11 +33,24 @@ class APE:
     def connect(self, *args, **kwargs):
         if self.connection is None:
             self.connection = self.context_manager.__enter__(*args, **kwargs)
+
+            self.__all__ = ape.__all__
+
+            for attr in ape.__all__:
+                setattr(self, attr, getattr(ape, attr))
+
             self.provider = self.connection
-            self.network = self.provider.network
+            self.network = self.connection.network
             self.explorer = self.provider.network.explorer
             self.web3 = self.provider.web3
             self.contracts = self.network.chain_manager.contracts
+
+            # assert self.provider is self.project.provider
+            # assert self.network is self.project.provider.network
+            # assert self.explorer is self.project.provider.network.explorer
+            # assert self.web3 is self.project.provider.web3
+            # assert self.contracts is self.project.provider.network.chain_manager.contracts
+
         return self
 
     def disconnect(self, *args, **kwargs):
