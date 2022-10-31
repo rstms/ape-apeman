@@ -17,16 +17,17 @@ class APE:
         project_dir=None,
         data_dir=None,
     ):
-        project_dir = Path(project_dir or os.environ.get(
-            "APE_PROJECT_DIR", Path.cwd() / "ape"
-        ))
-        data_dir = Path(data_dir or os.environ.get(
-            "APE_DATA_DIR", project_dir / "data"
-        ))
+        project_dir = Path(
+            project_dir
+            or os.environ.get("APE_PROJECT_DIR", Path.cwd() / "ape")
+        )
+        data_dir = Path(
+            data_dir or os.environ.get("APE_DATA_DIR", project_dir / "data")
+        )
         project_dir.mkdir(exist_ok=True)
         data_dir.mkdir(exist_ok=True)
         ape.config.DATA_FOLDER = data_dir
-        ape.config.PROJECT_FOLDER =  project_dir
+        ape.config.PROJECT_FOLDER = project_dir
         ape.config.load(force_reload=True)
         if selector is None:
             ecosystem = ecosystem or os.environ["APE_ECOSYSTEM"]
