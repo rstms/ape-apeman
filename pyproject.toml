@@ -62,4 +62,4 @@ collect_ignore = ['setup.py']
 
 
 [project.scripts]
-apeman = "ape_apeman:cli"
+apeman = "ape_apeman.cli:cli"

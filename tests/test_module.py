@@ -4,7 +4,7 @@ import pytest
 from ape_ethereum.transactions import Receipt
 from eth_account import Account
 
-from ape_apeman import APE
+from ape_apeman.context import APE
 
 
 @pytest.fixture

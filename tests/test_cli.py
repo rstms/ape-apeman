@@ -6,7 +6,8 @@ import pytest
 from click.testing import CliRunner
 
 import ape_apeman
-from ape_apeman import __version__, cli
+from ape_apeman import __version__
+from ape_apeman.cli import cli
 
 
 def test_cli_version():
