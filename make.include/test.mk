@@ -1,6 +1,6 @@
 # test - testing with pytest and tox
 
-options ?= -x --log-cli-level=CRITICAL $(if $(USE_GAS),,-m "not uses_gas")
+options ?= -x --log-cli-level=CRITICAL $(if $(USE_GAS),, -m "not uses_gas")
 testfiles ?= $(wildcard tests/test_*.py)
 options := $(if $(test),$(options) -k $(test),$(options))
 
@@ -13,7 +13,7 @@ test:
 
 ### run tests; drop into pdb on exceptions or breakpoints
 debug:
-	@$(MAKE) --no-print-directory options="$(options) --log-cli-level=INFO -xvvvs --pdb" test
+	env TESTING=1 pytest $(options) --log-cli-level=INFO -xvvvs --pdb $(testfiles)
 
 ### check code coverage quickly with the default Python
 coverage:

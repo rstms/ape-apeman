@@ -2,6 +2,11 @@ import os
 
 import pytest
 
+@pytest.fixture(autouse=True)
+def ape_data(shared_datadir, monkeypatch):
+    monkeypatch.setenv('APE_PROJECT_DIR', str(shared_datadir / 'ape_project'))
+    monkeypatch.setenv('APE_DATA_DIR', str(shared_datadir / 'ape_data'))
+
 
 @pytest.fixture
 def txn_hash():
