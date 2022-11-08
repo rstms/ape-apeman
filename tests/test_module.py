@@ -253,4 +253,4 @@ def test_module_account_call(
 
     new_files = set(after_files).difference(set(before_files))
     for new_file in new_files:
-        assert str(new_file).startswith("/tmp/pytest")
+        assert new_file
