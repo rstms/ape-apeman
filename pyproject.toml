@@ -42,7 +42,8 @@ dev = [
   "pytest",
   "pytest-datadir",
   "toml",
-  "tox"
+  "tox",
+  "pdbpp"
 ]
 docs = [
   "m2r2",

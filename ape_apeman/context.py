@@ -5,6 +5,8 @@ from pathlib import Path
 
 import ape
 
+from .account import KeyAccount
+
 
 class APE:
     def __init__(
@@ -26,8 +28,12 @@ class APE:
         )
         project_dir.mkdir(exist_ok=True)
         data_dir.mkdir(exist_ok=True)
+
         ape.config.DATA_FOLDER = data_dir
         ape.config.PROJECT_FOLDER = project_dir
+
+        ape.project = ape.Project(project_dir)
+
         ape.config.load(force_reload=True)
         if selector is None:
             ecosystem = ecosystem or os.environ["APE_ECOSYSTEM"]
@@ -45,8 +51,24 @@ class APE:
         if self.connection:
             self.disconnect()
 
+    def account(
+        self,
+        private_key,
+        alias=None,
+        password=None,
+        autosign=False,
+    ):
+        return KeyAccount(
+            ape=self,
+            private_key=private_key,
+            alias=alias,
+            password=password,
+            autosign=autosign,
+        )
+
     def connect(self, *args, **kwargs):
         if self.connection is None:
+
             self.connection = self.context_manager.__enter__(*args, **kwargs)
 
             self.__all__ = ape.__all__

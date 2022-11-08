@@ -1,12 +1,20 @@
 import os
+from pathlib import Path
 
 import pytest
 
 
 @pytest.fixture(autouse=True)
-def ape_data(shared_datadir, monkeypatch):
-    monkeypatch.setenv("APE_PROJECT_DIR", str(shared_datadir / "ape_project"))
-    monkeypatch.setenv("APE_DATA_DIR", str(shared_datadir / "ape_data"))
+def prevent_home_data_dir():
+    home_ape = Path.home().resolve() / ".ape"
+    cwd_ape = Path(".").resolve() / "ape"
+    assert not home_ape.exists()
+    assert not cwd_ape.exists()
+    try:
+        yield True
+    finally:
+        assert not home_ape.exists()
+        assert not cwd_ape.exists()
 
 
 @pytest.fixture

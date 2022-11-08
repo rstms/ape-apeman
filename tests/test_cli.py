@@ -18,8 +18,11 @@ def test_cli_version():
 
 
 @pytest.fixture
-def run():
+def run(monkeypatch, shared_datadir):
     runner = CliRunner()
+
+    monkeypatch.setenv("APE_PROJECT_DIR", str(shared_datadir / "ape_project"))
+    monkeypatch.setenv("APE_DATA_DIR", str(shared_datadir / "ape_data"))
 
     # env = os.environ.copy()
     # env['EXTRA_ENV_VAR'] = 'VALUE'
