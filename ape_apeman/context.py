@@ -19,6 +19,7 @@ class APE:
         project_dir=None,
         data_dir=None,
     ):
+        self.connection = None
         project_dir = Path(
             project_dir
             or os.environ.get("APE_PROJECT_DIR", Path.cwd() / "ape")
@@ -43,7 +44,6 @@ class APE:
                 "APE_SELECTOR", f"{ecosystem}:{network}:{provider}"
             )
         self.context_manager = ape.networks.parse_network_choice(selector)
-        self.connection = None
         if connect is True:
             self.connect()
 
