@@ -1,5 +1,5 @@
 ape-alchemy
 ape-etherscan
 click
-eth-ape
+eth-ape==0.5.3
 python-box
