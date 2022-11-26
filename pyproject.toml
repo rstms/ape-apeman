@@ -25,7 +25,8 @@ dependencies = [
   "ape-etherscan",
   "click",
   "eth-ape==0.5.3",
-  "python-box"
+  "python-box",
+  "pyrate-limiter"
 ]
 
 [tool.flit.module]

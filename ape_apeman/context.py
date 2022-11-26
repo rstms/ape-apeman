@@ -4,8 +4,14 @@ import os
 from pathlib import Path
 
 import ape
+from pyrate_limiter import Duration, Limiter, RequestRate
 
 from .account import KeyAccount
+
+ETHERSCAN_LIMIT = int(os.environ.get("ETHERSCAN_LIMIT", "5"))
+ETHERSCAN_MAX_DELAY = int(os.environ.get("ETHERSCAN_MAX_DELAY", "60"))
+
+limiter = Limiter(RequestRate(ETHERSCAN_LIMIT, Duration.SECOND))
 
 
 class APE:
@@ -78,7 +84,7 @@ class APE:
 
             self.provider = self.connection
             self.network = self.connection.network
-            self.explorer = self.provider.network.explorer
+            self._explorer = self.provider.network.explorer
             self.web3 = self.provider.web3
             self.contracts = self.network.chain_manager.contracts
 
@@ -89,6 +95,11 @@ class APE:
             # assert self.contracts is self.project.provider.network.chain_manager.contracts
 
         return self
+
+    @property
+    @limiter.ratelimit("etherscan", delay=True, max_delay=ETHERSCAN_MAX_DELAY)
+    def explorer(self):
+        return self._explorer
 
     def disconnect(self, *args, **kwargs):
         if self.connection:
