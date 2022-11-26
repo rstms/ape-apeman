@@ -3,3 +3,4 @@ ape-etherscan
 click
 eth-ape==0.5.3
 python-box
+pyrate-limiter
