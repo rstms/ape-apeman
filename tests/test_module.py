@@ -202,14 +202,7 @@ def _find_files(dir, label=None, output=pdebug):
 def test_module_account_call(
     APE, shared_datadir, contract_address, owner_address, owner_private_key
 ):
-    before_files = _find_files(shared_datadir)
-
-    project_name = "ape_project_test_module_account_call"
-    project_dir = shared_datadir / project_name
-    project_dir.mkdir()
-    data_dir = shared_datadir / (project_name + "_data")
-    data_dir.mkdir()
-    with APE(project_dir=project_dir, data_dir=data_dir) as ape:
+    with APE() as ape:
         # call a public function
 
         contract = ape.Contract(contract_address)
@@ -247,11 +240,3 @@ def test_module_account_call(
 
         info(pformat(components))
         info(pformat(prices))
-
-    after_files = _find_files(shared_datadir)
-
-    assert before_files != after_files
-
-    new_files = set(after_files).difference(set(before_files))
-    for new_file in new_files:
-        assert new_file
