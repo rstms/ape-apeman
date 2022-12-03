@@ -207,7 +207,6 @@ def test_module_account_call(
     project_name = "ape_project_test_module_account_call"
     project_dir = shared_datadir / project_name
     project_dir.mkdir()
-
     with APE(project_dir=project_dir) as ape:
         # call a public function
 
@@ -254,14 +253,3 @@ def test_module_account_call(
     new_files = set(after_files).difference(set(before_files))
     for new_file in new_files:
         assert new_file
-
-
-def test_module_account_transactions(shared_datadir, APE, owner_address):
-    project_name = "ape_project_test_module_account_transactions"
-    project_dir = shared_datadir / project_name
-    project_dir.mkdir()
-    with APE(project_dir=project_dir) as ape:
-        info(f"query all transactions for account {owner_address}")
-        txns = ape.explorer.get_account_transactions(owner_address)
-        txns = list(txns)
-        info(f"{len(txns)} txns returned")

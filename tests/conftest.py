@@ -1,7 +1,18 @@
+import logging
 import os
 from pathlib import Path
 
 import pytest
+
+
+@pytest.fixture(autouse=True)
+def setup_logger():
+    logging.basicConfig(
+        format="%(levelname)s %(name)s.%(funcName)s: %(message)s [%(filename)s:%(lineno)s]",
+        force=True,
+    )
+    logging.getLogger("urllib3.connectionpool").setLevel("WARNING")
+    logging.getLogger("ape").setLevel("ERROR")
 
 
 @pytest.fixture(autouse=True)

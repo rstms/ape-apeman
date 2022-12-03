@@ -29,6 +29,8 @@ class KeyAccount:
         self.keyfile = Path(accounts_dir) / f"{self.alias}.json"
         self.keyfile.write_text(json.dumps(account))
         atexit.register(self.keyfile.unlink, missing_ok=True)
+        self.ape_account = None
+        self.load()
 
     def __del__(self):
         if self.keyfile:
@@ -39,8 +41,12 @@ class KeyAccount:
         return self
 
     def __enter__(self):
-        self.ape_account = self.ape.accounts.load(self.alias)
-        if self.autosign:
+        return self.load()
+
+    def load(self, autosign=False):
+        if self.ape_account is None:
+            self.ape_account = self.ape.accounts.load(self.alias)
+        if self.autosign or autosign:
             self.ape_account.set_autosign(True, self.password)
         return self.ape_account
 
