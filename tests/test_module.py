@@ -207,7 +207,9 @@ def test_module_account_call(
     project_name = "ape_project_test_module_account_call"
     project_dir = shared_datadir / project_name
     project_dir.mkdir()
-    with APE(project_dir=project_dir) as ape:
+    data_dir = shared_datadir / (project_name + "_data")
+    data_dir.mkdir()
+    with APE(project_dir=project_dir, data_dir=data_dir) as ape:
         # call a public function
 
         contract = ape.Contract(contract_address)
