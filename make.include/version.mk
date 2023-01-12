@@ -45,6 +45,7 @@ version-update:
 	$(MAKE) requirements.txt
 	sed -E -i $(module)/version.py -e "s/(.*__timestamp__.*=).*/\1 \"$$(date --rfc-3339=seconds)\"/"
 	git add $(module)/version.py
+	git add requirements*.txt
 	@echo "Updated version.py timestamp and requirements.txt"
 
 # clean up version tempfiles
