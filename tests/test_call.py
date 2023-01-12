@@ -4,11 +4,14 @@ import logging
 from pprint import pformat
 
 import pytest
+from eth_utils import to_wei
 
 import ape_apeman
 from ape_apeman.context import ContractCallResult
 
 info = logging.info
+
+TIP_GWEI = 10
 
 
 @pytest.fixture
@@ -31,6 +34,7 @@ def test_call_set(ape, contract_address, owner_address, owner_private_key):
         "setPrintRoyalty",
         royalty_fee,
         private_key=owner_private_key,
+        max_priority_fee=ape.provider.priority_fee + to_wei(TIP_GWEI, "gwei"),
     )
     assert isinstance(result, ContractCallResult)
     info(pformat(result.ret))
@@ -54,6 +58,7 @@ def test_call_get_set(ape, contract_address, owner_address, owner_private_key):
         sender=owner_address,
         private_key=owner_private_key,
         autosign=True,
+        max_priority_fee=ape.provider.priority_fee + to_wei(TIP_GWEI, "gwei"),
     )
     assert ret_set.ret is None
     assert ret_set.receipt
@@ -73,6 +78,7 @@ def test_call_get_set(ape, contract_address, owner_address, owner_private_key):
         pre_prices.ret.printRoyalty,
         private_key=owner_private_key,
         autosign=True,
+        max_priority_fee=ape.provider.priority_fee + to_wei(TIP_GWEI, "gwei"),
     )
     assert ret_reset.ret is None
     assert ret_reset.receipt
@@ -94,6 +100,7 @@ def test_call_mint(ape, contract_address, owner_address, owner_private_key):
         owner_address,
         uri,
         private_key=owner_private_key,
+        max_priority_fee=ape.provider.priority_fee + to_wei(TIP_GWEI, "gwei"),
     )
     assert isinstance(result, ContractCallResult)
     info(pformat(result.dict()))
