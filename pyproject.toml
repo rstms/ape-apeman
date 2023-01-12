@@ -24,7 +24,7 @@ dependencies = [
   "ape-alchemy",
   "ape-etherscan",
   "click",
-  "eth-ape==0.5.3",
+  "eth-ape",
   "python-box",
   "pyrate-limiter"
 ]
