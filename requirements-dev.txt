@@ -6,6 +6,4 @@ flake8
 flake8-length
 pytest
 pytest-datadir
-toml
-tox
 pdbpp
