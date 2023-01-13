@@ -6,10 +6,10 @@ pyproject_toml_value = sed -n '/^\s*$(1)\s*=/s/^.*"\(.*\)".*$$/\1/p;'
 pyproject_toml_lookup = $(call pyproject_toml_section,$(1))|$(call pyproject_toml_value,$(2))
 
 # set make variables from project files
-project != $(call pyproject_toml_lookup,project,name)
-module != $(call pyproject_toml_lookup,tool.flit.module,name)
-cli != $(call pyproject_toml_section,project.scripts) | sed -n 's/^\(.*\)\s=.*$$/\1/p;q'
-version != grep __version__ $(module)/version.py | grep -o '[0-9.]*'
+project := $(shell tq -r .project.name pyproject.toml)
+module := $(shell tq -r .tool.flit.module.name pyproject.toml)
+cli := $(shell tq -r '.project.scripts|keys|.[0]' pyproject.toml)
+version := $(shell cat VERSION)
 python_src != find . -name \*.py
 other_src := $(call makefiles) pyproject.toml
 src := $(python_src) $(other_src)

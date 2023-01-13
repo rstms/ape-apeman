@@ -30,12 +30,12 @@ testls:
 .PHONY: tox
 ### test with tox if sources have changed
 tox: .tox 
-.tox: $(src) tox.ini
+.tox: $(src) tox.ini fmt
 	$(call gitclean)
 	env PYTEST_OPTIONS='$(tox_options)' tox
 	@touch $@
 
-dirtytox:
+detox:
 	$(MAKE) --no-print-directory ALLOW_DIRTY=1 tox
 
 # run tox in debug mode
