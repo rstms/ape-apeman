@@ -6,9 +6,10 @@ import click
 from box import Box
 from eth_utils import from_wei, to_checksum_address
 
-from .context import APE
 from .exception_handler import ExceptionHandler
+from .exceptions import ExplorerNotAvailable
 from .json import dumps
+from .manager import APE
 from .version import __timestamp__, __version__
 
 header = f"{__name__.split('.')[0]} v{__version__} {__timestamp__}"
@@ -90,7 +91,10 @@ def txn(ctx, url, logs, txn_hash):
     """output transaction receipt"""
     with ctx.obj.ape as ape:
         if url:
-            ret = ape.explorer.get_transaction_url(txn_hash)
+            if ape.explorer:
+                ret = ape.explorer.get_transaction_url(txn_hash)
+            else:
+                raise ExplorerNotAvailable
         elif logs:
             receipt = ape.provider.get_receipt(txn_hash)
             logs = receipt.decode_logs()

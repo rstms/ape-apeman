@@ -4,6 +4,10 @@ options ?= -x --log-cli-level=CRITICAL $(if $(USE_GAS),, -m "not uses_gas")
 testfiles ?= $(wildcard tests/test_*.py)
 options := $(if $(test),$(options) -k $(test),$(options))
 
+ifdef PYTEST_OPTIONS
+options := $(options) $(PYTEST_OPTIONS)
+endif
+
 tox_options ?= -m "not uses_gas"
 
 

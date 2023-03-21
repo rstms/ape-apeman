@@ -62,6 +62,7 @@ def test_cli_help(run):
     assert "Show this message and exit." in result.output
 
 
+@pytest.mark.skip(reason="explorer disabled")
 def test_cli_txn_url(run, txn_hash):
     result = run(["txn", "--url", txn_hash])
     url = json.loads(result.output)

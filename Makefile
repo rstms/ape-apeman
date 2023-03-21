@@ -4,11 +4,11 @@ usage: short-help
 
 ### local install in editable mode for development
 dev: uninstall 
-	pip install --upgrade -e .[dev]
+	pip install --verbose --upgrade -e .[dev]
 
 ### install to the local environment from the source directory
 install: 
-	pip install --upgrade .
+	pip install --verbose --upgrade .
 
 ### remove module from the local python environment
 uninstall: 
